@@ -130,11 +130,11 @@ use Illuminate\Http\Request;
      *     security={{"bearer":{}}},
      *     tags={"Tasks"},
      *     summary="Get list of tasks",
-     *     description="Returns list of tasks with filters applied",
+     *     description="API endpoint to retrieve tasks with optional filters including status, start date, due date, priority, note content, note created at, perPage, order, and orderBy. Filters are optional; if values for any field are empty or null, they won't be considered for filtering.Default: Priority- High First",
  *     @OA\Parameter(
  *         name="status",
  *         in="query",
- *         description="Filter by status",
+ *         description="Filter tasks by their status ('New', 'Incomplete', 'Complete')",
  *         required=false,
  *         @OA\Schema(
  *             type="string",
@@ -144,7 +144,7 @@ use Illuminate\Http\Request;
  *     @OA\Parameter(
  *         name="start_date",
  *         in="query",
- *         description="Filter by start date",
+ *         description="Filter tasks created on or after a specified date.",
  *         required=false,
  *         @OA\Schema(
  *             type="string",
@@ -154,7 +154,7 @@ use Illuminate\Http\Request;
  *     @OA\Parameter(
  *         name="due_date",
  *         in="query",
- *         description="Filter by due date",
+ *         description="Filter tasks due on or before a specified date.",
  *         required=false,
  *         @OA\Schema(
  *             type="string",
@@ -164,17 +164,26 @@ use Illuminate\Http\Request;
  *     @OA\Parameter(
  *         name="priority",
  *         in="query",
- *         description="Filter by priority",
+ *         description="Filter tasks by priority level (e.g., 'High', 'Medium', 'Low').",
  *         required=false,
  *         @OA\Schema(
  *             type="string",
  *             enum={"High", "Low", "Medium"}
  *         )
  *     ),
+  *     @OA\Parameter(
+ *         name="notes",
+ *         in="query",
+ *         description="Include or exclude tasks with attached notes.",
+ *         required=false,
+ *         @OA\Schema(
+ *             type="string"
+ *         )
+ *     ),
  *     @OA\Parameter(
  *         name="note_content",
  *         in="query",
- *         description="Filter by note content",
+ *         description="Filter tasks by content within attached notes.",
  *         required=false,
  *         @OA\Schema(
  *             type="string"
@@ -193,7 +202,7 @@ use Illuminate\Http\Request;
  *     @OA\Parameter(
  *         name="perPage",
  *         in="query",
- *         description="Number of tasks per page",
+ *         description="Number of tasks to retrieve per page.",
  *         required=false,
  *         @OA\Schema(
  *             type="integer",
@@ -203,7 +212,7 @@ use Illuminate\Http\Request;
  *     @OA\Parameter(
  *         name="order",
  *         in="query",
- *         description="Order of the results",
+ *         description="Sorting order ('asc' for ascending, 'desc' for descending).",
  *         required=false,
  *         @OA\Schema(
  *             type="string",
@@ -213,7 +222,7 @@ use Illuminate\Http\Request;
  *     @OA\Parameter(
  *         name="orderBy",
  *         in="query",
- *         description="Order by field",
+ *         description="Field to order tasks by (e.g., 'due_date', 'priority').",
  *         required=false,
  *         @OA\Schema(
  *             type="string",

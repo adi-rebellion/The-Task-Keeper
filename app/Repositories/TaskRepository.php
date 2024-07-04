@@ -48,7 +48,7 @@ class TaskRepository implements CrudInterface
         }
 
         if (!empty($filter['notes'])) {
-            $query->has('notes');
+            $query->has ('notes');
         }
 
         if (!empty($filter['note_content'])) {

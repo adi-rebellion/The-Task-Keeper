@@ -21,108 +21,54 @@ class RegisterController extends Controller
         $this->authAccess = $authAccess;
     }
 
-   /**
+/**
  * @OA\Post(
  *     path="/api/register",
+ *     summary="User Register",
+ *     description="API endpoint to register a new user with fields for name, email, password, and confirmation, returning a   success message or error.",
  *     tags={"Authentication"},
- *     summary="User Registration",
- *     description="Register a new user to TaskKeeper with their name, email address, and password.",
- *     operationId="register",
  *     @OA\RequestBody(
- *         description="User registration data",
  *         required=true,
  *         @OA\MediaType(
- *             mediaType="application/json",
+ *             mediaType="application/x-www-form-urlencoded",
  *             @OA\Schema(
- *                 type="object",
- *                 @OA\Property(
- *                     property="name",
- *                     description="User's full name",
- *                     type="string",
- *                     example="John Doe"
- *                 ),
- *                 @OA\Property(
- *                     property="email",
- *                     description="User's email address",
- *                     type="string",
- *                     example="john.doe@example.com"
- *                 ),
- *                 @OA\Property(
- *                     property="password",
- *                     description="Password for the user account",
- *                     type="string",
- *                     example="password123"
- *                 ),
- *                 @OA\Property(
- *                     property="password_confirmation",
- *                     description="Confirmation of the password",
- *                     type="string",
- *                     example="password123"
- *                 ),
- *                 required={"name", "email", "password", "password_confirmation"}
+ *                 required={"name","email","password","password_confirmation"},
+ *                 @OA\Property(property="name", type="string", example="Mohan Sharma",description="User's full name"),
+ *                 @OA\Property(property="email", type="string", example="mohans@example.com",description="User's email address for registration."),
+ *                 @OA\Property(property="password", type="string", example="password123",description="User's chosen password for account access."),
+ *                 @OA\Property(property="password_confirmation", type="string", example="password123",description="Re-enter the password to confirm accuracy.")
  *             )
  *         )
  *     ),
  *     @OA\Response(
- *         response=201,
- *         description="User registered successfully",
+ *         response=200,
+ *         description="User registered successfully.",
  *         @OA\JsonContent(
- *             type="object",
- *             @OA\Property(
- *                 property="message",
- *                 description="Success message",
- *                 type="string",
- *                 example="User registered successfully"
+ *             @OA\Property(property="status", type="boolean", example=true),
+ *             @OA\Property(property="message", type="string", example="User registered successfully."),
+ *             @OA\Property(property="data", type="object",
+ *                 @OA\Property(property="user", type="object",
+ *                     @OA\Property(property="name", type="string", example="Mohan Sharma"),
+ *                     @OA\Property(property="email", type="string", example="mohans@example.com"),
+ *                     @OA\Property(property="updated_at", type="string", format="date-time", example="2024-07-04T16:09:33.000000Z"),
+ *                     @OA\Property(property="created_at", type="string", format="date-time", example="2024-07-04T16:09:33.000000Z"),
+ *                     @OA\Property(property="id", type="integer", example=6)
+ *                 ),
+ *                 @OA\Property(property="access_token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9..."),
+ *                 @OA\Property(property="token_type", type="string", example="Bearer"),
+ *                 @OA\Property(property="expires_at", type="string", example="2025-07-04 16:09:33")
  *             ),
- *             @OA\Property(
- *                 property="user",
- *                 description="Registered user details",
- *                 type="object",
- *                 @OA\Property(
- *                     property="id",
- *                     description="User ID",
- *                     type="integer",
- *                     example=1
- *                 ),
- *                 @OA\Property(
- *                     property="name",
- *                     description="User's full name",
- *                     type="string",
- *                     example="John Doe"
- *                 ),
- *                 @OA\Property(
- *                     property="email",
- *                     description="User's email address",
- *                     type="string",
- *                     example="john.doe@example.com"
- *                 )
- *             )
- *         )
- *     ),
- *     @OA\Response(
- *         response=400,
- *         description="Invalid input data",
- *         @OA\JsonContent(
- *             type="object",
- *             @OA\Property(
- *                 property="error",
- *                 description="Error message",
- *                 type="string",
- *                 example="Invalid input data"
- *             )
+ *             @OA\Property(property="errors", type="object", nullable=true, example=null)
  *         )
  *     ),
  *     @OA\Response(
  *         response=500,
- *         description="Internal server error",
+ *         description="Server error",
  *         @OA\JsonContent(
- *             type="object",
- *             @OA\Property(
- *                 property="error",
- *                 description="Error message",
- *                 type="string",
- *                 example="Internal server error"
- *             )
+ *             @OA\Property(property="status", type="boolean", example=false),
+ *             @OA\Property(property="message", type="string", example="Sorry, something went wrong. Please try again."),
+ *             @OA\Property(property="data", type="object", nullable=true, example=null),
+ *             @OA\Property(property="errors", type="object", nullable=true, example=null)
  *         )
  *     )
  * )

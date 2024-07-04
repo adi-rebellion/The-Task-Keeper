@@ -21,58 +21,54 @@ class LoginController extends Controller
     {
         $this->authAccess = $authAccess;
     }
-
-       /**
+/**
  * @OA\Post(
  *     path="/api/login",
- *     tags={"Authentication"},
  *     summary="User Login",
- *     description="Allows a user to log in to TaskKeeper using their email address and password.",
- *     operationId="login",
+ *     description="API endpoint to login an existing user with email and password returning a success message or error.",
+ *     tags={"Authentication"},
  *     @OA\RequestBody(
- *         description="Credentials required to log in",
  *         required=true,
  *         @OA\MediaType(
  *             mediaType="application/x-www-form-urlencoded",
  *             @OA\Schema(
- *                 type="object",
- *                 @OA\Property(
- *                     property="email",
- *                     description="User's email address",
- *                     type="string"
- *                 ),
- *                 @OA\Property(
- *                     property="password",
- *                     description="User's password",
- *                     type="string"
- *                 ),
- *                 required={"email", "password"}
+ *                 required={"email","password"},
+ *                 @OA\Property(property="email", type="string", example="mohans@example.com",description="User's registered email address."),
+ *                 @OA\Property(property="password", type="string", example="password123",description="User's password for account authentication.")
  *             )
  *         )
  *     ),
  *     @OA\Response(
  *         response=200,
- *         description="Login successful",
+ *         description="Logged in successfully.",
  *         @OA\JsonContent(
- *             type="object",
- *             @OA\Property(
- *                 property="token",
- *                 description="Authentication token",
- *                 type="string"
- *             )
+ *             @OA\Property(property="status", type="boolean", example=true),
+ *             @OA\Property(property="message", type="string", example="Logged in successfully."),
+ *             @OA\Property(property="data", type="object",
+ *                 @OA\Property(property="user", type="object",
+ *                     @OA\Property(property="id", type="integer", example=3),
+ *                     @OA\Property(property="name", type="string", example="Mohan Sharma"),
+ *                     @OA\Property(property="email", type="string", example="mohans@example.com"),
+ *                     @OA\Property(property="email_verified_at", type="string", nullable=true, example=null),
+ *                     @OA\Property(property="created_at", type="string", format="date-time", example="2024-07-04T19:52:26.000000Z"),
+ *                     @OA\Property(property="updated_at", type="string", format="date-time", example="2024-07-04T19:52:26.000000Z")
+ *                 ),
+ *                 @OA\Property(property="access_token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9..."),
+ *                 @OA\Property(property="token_type", type="string", example="Bearer"),
+ *                 @OA\Property(property="expires_at", type="string", example="2025-07-04 19:52:53")
+ *             ),
+ *             @OA\Property(property="errors", type="object", nullable=true, example=null)
  *         )
  *     ),
  *     @OA\Response(
- *         response=401,
- *         description="Invalid email or password"
- *     ),
- *     @OA\Response(
- *         response=404,
- *         description="User not found"
- *     ),
- *     @OA\Response(
  *         response=500,
- *         description="Internal server error"
+ *         description="Server error",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="status", type="boolean", example=false),
+ *             @OA\Property(property="message", type="string", example="Sorry, something went wrong. Please try again."),
+ *             @OA\Property(property="data", type="object", nullable=true, example=null),
+ *             @OA\Property(property="errors", type="object", nullable=true, example=null)
+ *         )
  *     )
  * )
  */
@@ -93,48 +89,38 @@ class LoginController extends Controller
 /**
  * @OA\Post(
  *     path="/api/logout",
- *     tags={"Authentication"},
  *     summary="User Logout",
- *     description="Logs out the authenticated user and invalidates their session token.",
- *     operationId="logout",
- *     security={{"bearer":{}}},
+ *     description="API endpoint to logout an Auth user returning a success message or error.",
+ *     tags={"Authentication"},
+ *     security={{"bearer": {}}},
  *     @OA\Response(
  *         response=200,
- *         description="Logout successful",
+ *         description="User logged out successfully.",
  *         @OA\JsonContent(
- *             type="object",
- *             @OA\Property(
- *                 property="message",
- *                 description="Success message",
- *                 type="string",
- *                 example="User logged out successfully"
- *             )
+ *             @OA\Property(property="status", type="boolean", example=true),
+ *             @OA\Property(property="message", type="string", example="User logged out successfully."),
+ *             @OA\Property(property="data", type="string", example=""),
+ *             @OA\Property(property="errors", type="object", nullable=true, example=null)
  *         )
  *     ),
  *     @OA\Response(
  *         response=401,
  *         description="Unauthorized",
  *         @OA\JsonContent(
- *             type="object",
- *             @OA\Property(
- *                 property="error",
- *                 description="Error message",
- *                 type="string",
- *                 example="Invalid or missing authentication token"
- *             )
+ *             @OA\Property(property="status", type="boolean", example=false),
+ *             @OA\Property(property="message", type="string", example="Unauthorized"),
+ *             @OA\Property(property="data", type="object", nullable=true, example=null),
+ *             @OA\Property(property="errors", type="object", nullable=true, example=null)
  *         )
  *     ),
  *     @OA\Response(
  *         response=500,
- *         description="Internal server error",
+ *         description="Server error",
  *         @OA\JsonContent(
- *             type="object",
- *             @OA\Property(
- *                 property="error",
- *                 description="Error message",
- *                 type="string",
- *                 example="Internal server error"
- *             )
+ *             @OA\Property(property="status", type="boolean", example=false),
+ *             @OA\Property(property="message", type="string", example="Sorry, something went wrong. Please try again."),
+ *             @OA\Property(property="data", type="object", nullable=true, example=null),
+ *             @OA\Property(property="errors", type="object", nullable=true, example=null)
  *         )
  *     )
  * )
