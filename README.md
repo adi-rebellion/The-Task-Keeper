@@ -15,7 +15,7 @@ This project implements a Laravel-based REST API application for managing tasks 
 ## Requirements
 
 - Laravel 8.75
-- Docker for deployment (`sudo docker-compose build` and `sudo docker-compose up`)
+- Docker for deployment (`sudo docker compose build` and `sudo docker compose up`)
 - PHP runs on port 29100, PHPMyAdmin on port 29182
 
 ## Installation and Setup
