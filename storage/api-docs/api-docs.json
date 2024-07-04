@@ -14,10 +14,9 @@
                     "Authentication"
                 ],
                 "summary": "User Login",
-                "description": "Allows a user to log in to TaskKeeper using their email address and password.",
-                "operationId": "login",
+                "description": "API endpoint to login an existing user with email and password returning a success message or error.",
+                "operationId": "3673edffcdc18c06ac5aef5e2219d774",
                 "requestBody": {
-                    "description": "Credentials required to log in",
                     "required": true,
                     "content": {
                         "application/x-www-form-urlencoded": {
@@ -28,12 +27,14 @@
                                 ],
                                 "properties": {
                                     "email": {
-                                        "description": "User's email address",
-                                        "type": "string"
+                                        "description": "User's registered email address.",
+                                        "type": "string",
+                                        "example": "mohans@example.com"
                                     },
                                     "password": {
-                                        "description": "User's password",
-                                        "type": "string"
+                                        "description": "User's password for account authentication.",
+                                        "type": "string",
+                                        "example": "password123"
                                     }
                                 },
                                 "type": "object"
@@ -43,14 +44,72 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Login successful",
+                        "description": "Logged in successfully.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "token": {
-                                            "description": "Authentication token",
-                                            "type": "string"
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Logged in successfully."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "user": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 3
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Mohan Sharma"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "example": "mohans@example.com"
+                                                        },
+                                                        "email_verified_at": {
+                                                            "type": "string",
+                                                            "example": null,
+                                                            "nullable": true
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "example": "2024-07-04T19:52:26.000000Z"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "example": "2024-07-04T19:52:26.000000Z"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "access_token": {
+                                                    "type": "string",
+                                                    "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9..."
+                                                },
+                                                "token_type": {
+                                                    "type": "string",
+                                                    "example": "Bearer"
+                                                },
+                                                "expires_at": {
+                                                    "type": "string",
+                                                    "example": "2025-07-04 19:52:53"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": null,
+                                            "nullable": true
                                         }
                                     },
                                     "type": "object"
@@ -58,14 +117,35 @@
                             }
                         }
                     },
-                    "401": {
-                        "description": "Invalid email or password"
-                    },
-                    "404": {
-                        "description": "User not found"
-                    },
                     "500": {
-                        "description": "Internal server error"
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Sorry, something went wrong. Please try again."
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": null,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -76,19 +156,31 @@
                     "Authentication"
                 ],
                 "summary": "User Logout",
-                "description": "Logs out the authenticated user and invalidates their session token.",
-                "operationId": "logout",
+                "description": "API endpoint to logout an Auth user returning a success message or error.",
+                "operationId": "5e29d25372d83a1ff5c3165a43f3302d",
                 "responses": {
                     "200": {
-                        "description": "Logout successful",
+                        "description": "User logged out successfully.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
                                         "message": {
-                                            "description": "Success message",
                                             "type": "string",
-                                            "example": "User logged out successfully"
+                                            "example": "User logged out successfully."
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": ""
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": null,
+                                            "nullable": true
                                         }
                                     },
                                     "type": "object"
@@ -102,10 +194,23 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
-                                            "description": "Error message",
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "Invalid or missing authentication token"
+                                            "example": "Unauthorized"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": null,
+                                            "nullable": true
                                         }
                                     },
                                     "type": "object"
@@ -114,15 +219,28 @@
                         }
                     },
                     "500": {
-                        "description": "Internal server error",
+                        "description": "Server error",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
-                                            "description": "Error message",
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "Internal server error"
+                                            "example": "Sorry, something went wrong. Please try again."
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": null,
+                                            "nullable": true
                                         }
                                     },
                                     "type": "object"
@@ -143,14 +261,13 @@
                 "tags": [
                     "Authentication"
                 ],
-                "summary": "User Registration",
-                "description": "Register a new user to TaskKeeper with their name, email address, and password.",
-                "operationId": "register",
+                "summary": "User Register",
+                "description": "API endpoint to register a new user with fields for name, email, password, and confirmation, returning a   success message or error.",
+                "operationId": "748a1acc92fb3e56f8f6ace55b5a9d24",
                 "requestBody": {
-                    "description": "User registration data",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "application/x-www-form-urlencoded": {
                             "schema": {
                                 "required": [
                                     "name",
@@ -162,20 +279,20 @@
                                     "name": {
                                         "description": "User's full name",
                                         "type": "string",
-                                        "example": "John Doe"
+                                        "example": "Mohan Sharma"
                                     },
                                     "email": {
-                                        "description": "User's email address",
+                                        "description": "User's email address for registration.",
                                         "type": "string",
-                                        "example": "john.doe@example.com"
+                                        "example": "mohans@example.com"
                                     },
                                     "password": {
-                                        "description": "Password for the user account",
+                                        "description": "User's chosen password for account access.",
                                         "type": "string",
                                         "example": "password123"
                                     },
                                     "password_confirmation": {
-                                        "description": "Confirmation of the password",
+                                        "description": "Re-enter the password to confirm accuracy.",
                                         "type": "string",
                                         "example": "password123"
                                     }
@@ -186,54 +303,68 @@
                     }
                 },
                 "responses": {
-                    "201": {
-                        "description": "User registered successfully",
+                    "200": {
+                        "description": "User registered successfully.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "message": {
-                                            "description": "Success message",
-                                            "type": "string",
-                                            "example": "User registered successfully"
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
                                         },
-                                        "user": {
-                                            "description": "Registered user details",
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User registered successfully."
+                                        },
+                                        "data": {
                                             "properties": {
-                                                "id": {
-                                                    "description": "User ID",
-                                                    "type": "integer",
-                                                    "example": 1
+                                                "user": {
+                                                    "properties": {
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Mohan Sharma"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "example": "mohans@example.com"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "example": "2024-07-04T16:09:33.000000Z"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "example": "2024-07-04T16:09:33.000000Z"
+                                                        },
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 6
+                                                        }
+                                                    },
+                                                    "type": "object"
                                                 },
-                                                "name": {
-                                                    "description": "User's full name",
+                                                "access_token": {
                                                     "type": "string",
-                                                    "example": "John Doe"
+                                                    "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9..."
                                                 },
-                                                "email": {
-                                                    "description": "User's email address",
+                                                "token_type": {
                                                     "type": "string",
-                                                    "example": "john.doe@example.com"
+                                                    "example": "Bearer"
+                                                },
+                                                "expires_at": {
+                                                    "type": "string",
+                                                    "example": "2025-07-04 16:09:33"
                                                 }
                                             },
                                             "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid input data",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "description": "Error message",
-                                            "type": "string",
-                                            "example": "Invalid input data"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": null,
+                                            "nullable": true
                                         }
                                     },
                                     "type": "object"
@@ -242,15 +373,28 @@
                         }
                     },
                     "500": {
-                        "description": "Internal server error",
+                        "description": "Server error",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
-                                            "description": "Error message",
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "Internal server error"
+                                            "example": "Sorry, something went wrong. Please try again."
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": null,
+                                            "nullable": true
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": null,
+                                            "nullable": true
                                         }
                                     },
                                     "type": "object"
@@ -267,13 +411,13 @@
                     "Tasks"
                 ],
                 "summary": "Get list of tasks",
-                "description": "Returns list of tasks with filters applied",
+                "description": "API endpoint to retrieve tasks with optional filters including status, start date, due date, priority, note content, note created at, perPage, order, and orderBy. Filters are optional; if values for any field are empty or null, they won't be considered for filtering.Default: Priority- High First",
                 "operationId": "getTasks",
                 "parameters": [
                     {
                         "name": "status",
                         "in": "query",
-                        "description": "Filter by status",
+                        "description": "Filter tasks by their status ('New', 'Incomplete', 'Complete')",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -287,7 +431,7 @@
                     {
                         "name": "start_date",
                         "in": "query",
-                        "description": "Filter by start date",
+                        "description": "Filter tasks created on or after a specified date.",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -297,7 +441,7 @@
                     {
                         "name": "due_date",
                         "in": "query",
-                        "description": "Filter by due date",
+                        "description": "Filter tasks due on or before a specified date.",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -307,7 +451,7 @@
                     {
                         "name": "priority",
                         "in": "query",
-                        "description": "Filter by priority",
+                        "description": "Filter tasks by priority level (e.g., 'High', 'Medium', 'Low').",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -319,9 +463,18 @@
                         }
                     },
                     {
+                        "name": "notes",
+                        "in": "query",
+                        "description": "Include or exclude tasks with attached notes.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "note_content",
                         "in": "query",
-                        "description": "Filter by note content",
+                        "description": "Filter tasks by content within attached notes.",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -340,7 +493,7 @@
                     {
                         "name": "perPage",
                         "in": "query",
-                        "description": "Number of tasks per page",
+                        "description": "Number of tasks to retrieve per page.",
                         "required": false,
                         "schema": {
                             "type": "integer",
@@ -350,7 +503,7 @@
                     {
                         "name": "order",
                         "in": "query",
-                        "description": "Order of the results",
+                        "description": "Sorting order ('asc' for ascending, 'desc' for descending).",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -360,7 +513,7 @@
                     {
                         "name": "orderBy",
                         "in": "query",
-                        "description": "Order by field",
+                        "description": "Field to order tasks by (e.g., 'due_date', 'priority').",
                         "required": false,
                         "schema": {
                             "type": "string",

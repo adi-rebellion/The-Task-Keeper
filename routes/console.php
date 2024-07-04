@@ -36,9 +36,12 @@ Artisan::command('createpassport', function () {
     $privateKeyPath = storage_path('oauth-private.key');
 
     if (!File::exists($publicKeyPath) || !File::exists($privateKeyPath)) {
+
         $this->info('Passport keys not found. Running passport:install...');
         $this->call('passport:install');
     } else {
-        $this->info('Passport keys already exist.');
+        File::delete($publicKeyPath);
+        File::delete($privateKeyPath);
+        $this->call('passport:install');
     }
 })->purpose('Create a new enviroment file if not present.');
