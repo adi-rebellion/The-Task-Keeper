@@ -23,7 +23,7 @@ This project implements a Laravel-based REST API application for managing tasks 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/adi-rebellion/TaskKeeper.git
+   git clone https://github.com/adi-rebellion/The-Task-Keeper.git
    cd TaskKeeper
    ```
 
