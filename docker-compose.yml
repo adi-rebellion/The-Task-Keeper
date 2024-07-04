@@ -1,0 +1,67 @@
+version: "3.7"
+services:
+
+  # PHP Service /the app
+  localtaskkeeper-php:
+    container_name: localtaskkeeper-php
+    build:
+      context: .
+      target: php
+      args:
+        - APP_ENV=${APP_ENV}
+    environment:
+      - APP_ENV=${APP_ENV}
+      - CONTAINER_ROLE=app
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    networks:
+      - localtaskkeeper-private
+    ports:
+      - 29100:8000
+    depends_on:
+      - localtaskkeeper-mariadb
+
+  # Image--infrastructure:mariadb
+  localtaskkeeper-mariadb:
+    image: mariadb:10.5.9
+    hostname: localtaskkeeper-mariadb
+    container_name: localtaskkeeper-mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: task_keeper
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+    networks:
+      - localtaskkeeper-private
+    ports:
+      - '29906:3306'
+    volumes:
+      - ./docker/conf/init:/docker-entrypoint-initdb.d/:ro
+      - type: volume
+        source: localtaskkeeper-mariadb
+        target: /var/lib/mysql
+
+  # Image--infrastructure:pma
+  localtaskkeeper-pma:
+    image: phpmyadmin/phpmyadmin:4.7.9-1
+    container_name: localtaskkeeper-phpMyAdmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: localtaskkeeper-mariadb
+    networks:
+      - localtaskkeeper-private
+    ports:
+      - '29182:80'
+    depends_on:
+      - localtaskkeeper-mariadb
+
+networks:
+  localtaskkeeper-private:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.enable_icc: 'true'
+      com.docker.network.bridge.enable_ip_masquerade: 'true'
+volumes:
+  localtaskkeeper-mariadb:
+
+
