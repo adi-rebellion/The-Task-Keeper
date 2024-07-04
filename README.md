@@ -81,7 +81,9 @@ http://localhost:29100/api/documentation
 4. Now you can explore and test API endpoints securely.
 
 
-
+```
+https://api.postman.com/collections/13214997-b739b124-b280-41f9-9128-d87639d9c02e?access_key=PMAT-01J1ZCBBDZMPWTNXJ6H4894Z0P
+```
 
 
 
