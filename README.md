@@ -30,8 +30,8 @@ This project implements a Laravel-based REST API application for managing tasks 
 2. Build and start Docker containers:
 
    ```bash
-   sudo docker-compose build
-   sudo docker-compose up
+   sudo docker compose build
+   sudo docker compose up
    ```
 
 3. Access the application in your web browser:
