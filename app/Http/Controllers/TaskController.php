@@ -168,7 +168,8 @@ use Illuminate\Http\Request;
  *         required=false,
  *         @OA\Schema(
  *             type="string",
- *             enum={"High", "Low", "Medium"}
+ *             enum={"High", "Low", "Medium"},
+ *             default="High"
  *         )
  *     ),
   *     @OA\Parameter(

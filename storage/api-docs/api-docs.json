@@ -455,6 +455,7 @@
                         "required": false,
                         "schema": {
                             "type": "string",
+                            "default": "High",
                             "enum": [
                                 "High",
                                 "Low",
